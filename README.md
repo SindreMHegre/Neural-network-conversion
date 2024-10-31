@@ -1,0 +1,1 @@
+xxd -i simple_net.tflite > simple_net.cc
