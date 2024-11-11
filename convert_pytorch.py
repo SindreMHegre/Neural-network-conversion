@@ -17,7 +17,7 @@ import ai_edge_torch
 import numpy
 #from google.colab import files
 
-# Define the network
+# Define the network TODO: change to your network, if its a standard network, you can jump to initialization
 class SimpleNet(nn.Module):
     def __init__(self):
         super(SimpleNet, self).__init__()
@@ -31,8 +31,9 @@ class SimpleNet(nn.Module):
         x = self.fc3(x)
         return x
 
-# Initialize the model
+# Initialize the model TODO: change to your model
 model = SimpleNet()
+# TODO: change to the path of your model
 model.load_state_dict(torch.load('simple_net.pt'))
 model.eval()
 
@@ -50,4 +51,5 @@ print("TFLite output:" + str(tfLite_output))
 
 # Save the TFLite model
 #ai_edge_torch.save(tfLite_model, 'simple_net.tflite1')
+# TODO change to the path where you want to save your model
 tfLite_model.export('simple_net.tflite')
