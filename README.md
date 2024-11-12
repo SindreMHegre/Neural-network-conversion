@@ -8,7 +8,7 @@ update the convert_pytorch.py script to mach your model and model name, the 4 pl
 
 Run this command to make it a .cc file so that it can run on a microcontroller without a file structure. TODO, update to you model name
 
-xxd -i simple_net.tflite > simple_net.cpp
+xxd -i networks/simple_net.tflite > networks/simple_net.cpp
 
 Then create a .hpp file that includes your network and the size. See simple_net.cpp and simple_net.hpp and the 3 TODO's
 

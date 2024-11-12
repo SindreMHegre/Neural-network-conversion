@@ -17,27 +17,17 @@ import ai_edge_torch
 import numpy
 #from google.colab import files
 
-# Define the network TODO: change to your network, if its a standard network, you can jump to initialization
-class SimpleNet(nn.Module):
-    def __init__(self):
-        super(SimpleNet, self).__init__()
-        self.fc1 = nn.Linear(10, 32)  # Input layer (10 inputs)
-        self.fc2 = nn.Linear(32, 32)  # Hidden layer 1
-        self.fc3 = nn.Linear(32, 2)   # Output layer (2 outputs)
-
-    def forward(self, x):
-        x = torch.relu(self.fc1(x))
-        x = torch.relu(self.fc2(x))
-        x = self.fc3(x)
-        return x
+# Define the network TODO: change to your network
+#from networks.create_dummy_network import SimpleNet
+from networks.quadbug.networks import controlNetwork
 
 # Initialize the model TODO: change to your model
-model = SimpleNet()
+model = controlNetwork()
 # TODO: change to the path of your model
-model.load_state_dict(torch.load('simple_net.pt'))
+model.load_state_dict(torch.load('networks/quadbug/control_net.pt'))
 model.eval()
 
-sample_input = (torch.rand(1, 10),)
+sample_input = (torch.rand(1, 15),)
 torch_output = model(*sample_input)
 
 # Convert the model
@@ -52,4 +42,4 @@ print("TFLite output:" + str(tfLite_output))
 # Save the TFLite model
 #ai_edge_torch.save(tfLite_model, 'simple_net.tflite1')
 # TODO change to the path where you want to save your model
-tfLite_model.export('simple_net.tflite')
+tfLite_model.export('networks/quadbug/control_net.tflite')
