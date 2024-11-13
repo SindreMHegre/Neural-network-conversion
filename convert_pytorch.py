@@ -28,14 +28,15 @@ model.load_state_dict(torch.load('networks/quadbug/control_net.pt'))
 model.eval()
 
 sample_input = (torch.rand(1, 15),)
-torch_output = model(*sample_input)
+input_data = torch.tensor([[0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 0.9, 0.8, 0.7, 0.6, 0.5]], dtype=torch.float32)
+torch_output = model(*input_data) # [-0.4581,  0.0559, -0.2546, -0.2886, -0.2909, -0.2912]
 
 # Convert the model
 tfLite_model = ai_edge_torch.convert(model, sample_input)
-tfLite_output = tfLite_model(*sample_input)
+tfLite_output = tfLite_model(*input_data)
 
 # Compare the outputs
-print("Input:" + str(sample_input))
+print("Input:" + str(input_data))
 print("PyTorch output:" + str(torch_output))
 print("TFLite output:" + str(tfLite_output))
 
