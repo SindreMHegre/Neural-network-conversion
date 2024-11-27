@@ -80,6 +80,34 @@ class AllocationModel(nn.Module):
 
         return x
 
+class FullModel(nn.Module):
+    def __init__(self, layer_sizes):
+        super(FullModel, self).__init__()
+        self.control_stack = nn.ModuleList([])
+        self.allocation_stack = nn.ModuleList([])
+
+        self.control_stack.append(nn.Linear(layer_sizes[0], layer_sizes[1]))
+        if len(layer_sizes) > 2:
+            self.control_stack.append(nn.Tanh())
+            for i, input_size in enumerate(layer_sizes[1:-3]):
+                output_size = layer_sizes[i+2]
+                self.control_stack.append(
+                    nn.Linear(input_size, output_size).to(torch.float)).cpu()
+                self.control_stack.append(nn.Tanh())
+
+        self.allocation_stack.append(nn.Linear(layer_sizes[-3], layer_sizes[-2]).to(torch.float)).cpu()
+        self.allocation_stack.append(nn.ReLU())
+        self.allocation_stack.append(nn.Linear(layer_sizes[-2], layer_sizes[-1]).to(torch.float)).cpu()
+
+    def forward(self, x):
+        for l_or_a in self.control_stack:
+            x = l_or_a(x)
+
+        for l_or_a in self.allocation_stack:
+            x = l_or_a(x)
+
+        return x
+
 
 def split_network_jit(full_model_path):
     # Load the full network
@@ -170,8 +198,8 @@ def test_split_networks(self_split: bool = True):
 
     # Compare the outputs
     print("Input:" + str(input_data))
-    print("Expected thrust and torque:" + str(expected_thrust_torque))
-    print("Actual thrust and torque:" + str(control_output))
+    print("Expected thrust and torque (from PX4):" + str(expected_thrust_torque))
+    print("Actual thrust and torque (From the pytorch model):" + str(control_output))
     print("TFLite output:" + str(tfLite_output))
     #print("Rescaled output:" + str(rescaled_output))
     #print("Expected motor commands:" + str(expected_motor_commands))

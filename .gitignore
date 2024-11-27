@@ -1,2 +1,4 @@
 venv
-networks/__pycache__
+__pycache__
+neworks/__pycache__
+neworks/qadbug/__pycache__
