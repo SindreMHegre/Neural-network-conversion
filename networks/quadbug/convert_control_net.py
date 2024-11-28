@@ -4,7 +4,7 @@ import ai_edge_torch
 from networks import ControlModel
 
 
-def test_network():
+def convert_and_test_network():
     # Load the control model from aerialgym
     control_model = ControlModel([15, 32, 24, 6])
     control_model.load_state_dict(torch.load("quadBug_control.pt"))
@@ -70,4 +70,4 @@ def test_network():
             f.write("[" + ", ".join(f"{x:.8f}" for x in tfLite_output[i].flatten()) + "]\n")
 
 if __name__ == "__main__":
-    test_network()
+    convert_and_test_network()
