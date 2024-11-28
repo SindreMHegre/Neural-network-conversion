@@ -1,12 +1,12 @@
-## Converting from a pytorch .pt network to a .cc and .h file to run with tflite-micro
+## Converting from a pytorch .pt network to a .cpp and .hpp file to run with tflite-micro
 
-Install requirements.txt
+First install the requirements from requirements.txt:
 
 pip install -r requirements.txt
 
-update the convert_pytorch.py script to mach your model and model name, the 4 places to update are marked with TODO
+Then update the convert_pytorch.py script to mach your model and model name, the 4 places to update are marked with TODO
 
-Run this command to make it a .cc file so that it can run on a microcontroller without a file structure. TODO, update to you model name
+Run this command to make it a .cpp file so that it can run on a microcontroller without a file structure. TODO, update to you model name
 
 xxd -i networks/simple_net.tflite > networks/simple_net.cpp
 
