@@ -6,8 +6,8 @@ from networks import ControlModel
 
 def convert_and_test_network():
     # Load the control model from aerialgym
-    control_model = ControlModel([15, 32, 24, 6])
-    control_model.load_state_dict(torch.load("quadBug_control.pt"))
+    control_model = ControlModel([15, 256, 128, 6])
+    control_model.load_state_dict(torch.load("big_quadBug_control.pt"))
     control_model.eval()
 
     # Use test inputs from aerialgym
@@ -45,7 +45,7 @@ def convert_and_test_network():
 
     sample_input = (torch.rand(1, 15),)
     tfLite_model = ai_edge_torch.convert(control_model, sample_input)
-    tfLite_model.export('./control_net.tflite')
+    tfLite_model.export('./big_control_net.tflite')
 
     output = []
     tfLite_output = []
@@ -61,10 +61,10 @@ def convert_and_test_network():
 
         print("")
 
-        with open("test_result.txt", "a") as f:
+        with open("big_test_result.txt", "a") as f:
             f.write("[" + ", ".join(f"{x:.8f}" for x in output[i].flatten()) + "]\n")
 
-    with open("test_result.txt", "a") as f:
+    with open("big_test_result.txt", "a") as f:
         f.write("\n tfLite model output \n")
         for i in range(len(input_data)):
             f.write("[" + ", ".join(f"{x:.8f}" for x in tfLite_output[i].flatten()) + "]\n")
